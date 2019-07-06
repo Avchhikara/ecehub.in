@@ -1,14 +1,14 @@
-import AddArticle from "./../component/AddArticle";
-import Layout from "./../component/Layout";
+import Layout from "./../components/Layout";
+import AddArticleRouter from "./../components/AddArticleRouter";
 
-const addarticle = () => {
+function add() {
   return (
     <Layout
-      title="Electronics on your tips | EceHub.in"
-      description="ecehub.in provides you with high quality electronics content"
-      children={<AddArticle />}
+      title="Add Articles to help other in need | ecehub.in"
+      description="ecehub.in provides everyone with an ability to add an article which will help other fellow students"
+      children={<AddArticleRouter />}
     />
   );
-};
+}
 
-export default addarticle;
+export default add;
