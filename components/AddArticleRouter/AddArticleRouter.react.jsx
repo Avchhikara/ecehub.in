@@ -4,6 +4,8 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import AddArticleHome from "./../AddArticleHome";
 import Login from "./../Login";
+import Register from "./../Register";
+import AppProvider from "./../AppProvider";
 
 class AddArticleRouter extends React.Component {
   constructor(props) {
@@ -20,14 +22,15 @@ class AddArticleRouter extends React.Component {
   render() {
     if (this.state.isMounted) {
       return (
-        <div>
+        <AppProvider>
           <HashRouter baseURL="/add">
             <Switch>
               <Route path="/" exact component={AddArticleHome} />
               <Route path="/login" exact component={Login} />
+              <Route path="/register" exact component={Register} />
             </Switch>
           </HashRouter>
-        </div>
+        </AppProvider>
       );
     } else {
       return <div>Some component showing loading..</div>;
