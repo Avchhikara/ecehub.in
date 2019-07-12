@@ -3,6 +3,8 @@ import React from "react";
 import { Formik, Field } from "formik";
 import AppContext from "./../AppProvider/AppContext";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 import {
   Row,
   Card,
@@ -14,8 +16,11 @@ import {
   FormGroup,
   Spinner,
   Label,
-  Input
+  Input,
+  Alert
 } from "reactstrap";
+
+import { api } from "./../../utils/constants";
 
 import "./style.scss";
 
@@ -23,14 +28,61 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {},
+      response: {
+        message: "",
+        status: true
+      }
     };
+  }
+
+  componentDidMount() {
+    // This function will show the messages in the url that has been passed for the user
+    // Implement same function for the login page
+
+    const message = decodeURI(window.location.hash.split("=")[1]);
+    // console.log(message);
+    // console.log(window.location);
+    this.setState({
+      response: {
+        status: true,
+        message
+      }
+    });
   }
 
   registerValues = (values, loginUser, setSubmitting) => {
     // Do register thing here after passing values to the api and move the user to another link
+    // Now, making a request with axios
+    axios
+      .post(`${api}/register`, {
+        type: "REGISTER",
+        payload: {
+          ...values
+        }
+      })
+      .then(({ data }) => {
+        setSubmitting(false);
+        this.setState({
+          response: {
+            status: true,
+            message: data.message
+          }
+        });
+      })
+      .catch(err => {
+        setSubmitting(false);
+        console.log(err.response);
+        this.setState({
+          response: {
+            status: false,
+            message:
+              "Unknown error has occurred, please try again later or contact support"
+          }
+        });
+      });
 
-    setSubmitting(false);
+    // setSubmitting(false);
   };
 
   render() {
@@ -43,6 +95,17 @@ class Register extends React.Component {
               <Row>
                 <Card className="col-sm-8">
                   <CardBody>
+                    {this.state.response.message.length ? (
+                      <Alert
+                        color={
+                          this.state.response.status ? "success" : "danger"
+                        }
+                      >
+                        {this.state.response.message}
+                      </Alert>
+                    ) : (
+                      <noscript />
+                    )}
                     <CardTitle>
                       <h4 className="text-success">Register</h4>
                     </CardTitle>
