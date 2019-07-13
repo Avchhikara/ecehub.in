@@ -43,15 +43,17 @@ class Register extends React.Component {
     const message = decodeURI(window.location.hash.split("=")[1]);
     // console.log(message);
     // console.log(window.location);
-    this.setState({
-      response: {
-        status: true,
-        message
-      }
-    });
+    if (message) {
+      this.setState({
+        response: {
+          status: true,
+          message
+        }
+      });
+    }
   }
 
-  registerValues = (values, loginUser, setSubmitting) => {
+  registerValues = (values, loginUser, setSubmitting, resetForm) => {
     // Do register thing here after passing values to the api and move the user to another link
     // Now, making a request with axios
     axios
@@ -69,6 +71,7 @@ class Register extends React.Component {
             message: data.message
           }
         });
+        resetForm();
       })
       .catch(err => {
         setSubmitting(false);
@@ -76,10 +79,10 @@ class Register extends React.Component {
         this.setState({
           response: {
             status: false,
-            message:
-              "Unknown error has occurred, please try again later or contact support"
+            message: err.response.data
           }
         });
+        resetForm();
       });
 
     // setSubmitting(false);
@@ -148,9 +151,14 @@ class Register extends React.Component {
 
                         return errors;
                       }}
-                      onSubmit={(values, { setSubmitting }) => {
+                      onSubmit={(values, { setSubmitting, resetForm }) => {
                         // setSubmitting(false);
-                        this.registerValues(values, loginUser, setSubmitting);
+                        this.registerValues(
+                          values,
+                          loginUser,
+                          setSubmitting,
+                          resetForm
+                        );
                       }}
                       render={({
                         values,
@@ -173,8 +181,9 @@ class Register extends React.Component {
                                   name="name"
                                   id="name"
                                   placeholder="Your Good name here"
-                                  invalid={!!errors.name}
+                                  invalid={touched.name && !!errors.name}
                                   tag={Field}
+                                  autoFocus
                                 />
                                 <div className="invalid-feedback">
                                   {errors && touched.name && errors.name}
@@ -191,7 +200,7 @@ class Register extends React.Component {
                                   name="email"
                                   id="email"
                                   placeholder="email-id here"
-                                  invalid={!!errors.email}
+                                  invalid={touched.email && !!errors.email}
                                   tag={Field}
                                 />
                                 <div className="invalid-feedback">
@@ -209,7 +218,9 @@ class Register extends React.Component {
                                   name="password"
                                   id="password"
                                   placeholder="Strong password here"
-                                  invalid={!!errors.password}
+                                  invalid={
+                                    touched.password && !!errors.password
+                                  }
                                   tag={Field}
                                 />
                                 <div className="invalid-feedback">

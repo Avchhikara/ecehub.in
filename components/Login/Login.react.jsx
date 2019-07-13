@@ -12,10 +12,13 @@ import {
   Button,
   Input,
   FormText,
-  Spinner
+  Spinner,
+  Alert
 } from "reactstrap";
 import { Formik, Field } from "formik";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { api } from "./../../utils/constants";
 
 import AppContext from "./../AppProvider/AppContext";
 
@@ -25,15 +28,46 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      alert: {
+      response: {
         message: "",
         status: false
       }
     };
   }
 
-  onLoggingIn(values, loginUser) {
-    loginUser({ ...values, name: "Avnish", token: "token" });
+  onLoggingIn(values, loginUser, setSubmitting, resetForm) {
+    axios
+      .post(`${api}/register`, {
+        type: "LOGIN",
+        payload: { ...values }
+      })
+      .then(({ data }) => {
+        // now, here push the user to login page and such sort of stuff
+        this.setState({
+          response: {
+            status: true,
+            message: data.message
+          }
+        });
+
+        // resetForm();
+        setSubmitting(false);
+        // Now, push the user to dashboard ?
+        // Also, update the context API state
+        loginUser({ ...data });
+        this.props.history.push("/dashboard");
+        console.log(this.props);
+      })
+      .catch(err => {
+        // first, setting the state to the error
+        this.setState({
+          response: {
+            status: false,
+            message: err.response.data
+          }
+        });
+        setSubmitting(false);
+      });
   }
 
   render() {
@@ -45,6 +79,17 @@ class Login extends React.Component {
               <Row>
                 <Card>
                   <CardBody>
+                    {this.state.response.message.length ? (
+                      <Alert
+                        color={
+                          this.state.response.status ? "success" : "danger"
+                        }
+                      >
+                        {this.state.response.message}
+                      </Alert>
+                    ) : (
+                      <noscript />
+                    )}
                     <CardTitle>
                       <h4 className="text-success">Login</h4>
                     </CardTitle>
@@ -70,13 +115,18 @@ class Login extends React.Component {
 
                         return errors;
                       }}
-                      onSubmit={(values, { setSubmitting }) => {
+                      onSubmit={(values, { setSubmitting, resetForm }) => {
                         // What to do when the form is submitted
-                        setSubmitting(false);
+                        // setSubmitting(false);
                         //   console.log(actions);
                         // Now, making an api request here
 
-                        this.onLoggingIn(values, loginUser);
+                        this.onLoggingIn(
+                          values,
+                          loginUser,
+                          setSubmitting,
+                          resetForm
+                        );
                       }}
                       render={({
                         values,

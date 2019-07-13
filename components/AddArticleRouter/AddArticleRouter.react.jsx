@@ -1,11 +1,12 @@
 import React from "react";
 
 import { HashRouter, Switch, Route } from "react-router-dom";
-import { Provider } from "react-redux";
+
 import AddArticleHome from "./../AddArticleHome";
 import Login from "./../Login";
 import Register from "./../Register";
 import AppProvider from "./../AppProvider";
+import Dashboard from "./../Dashboard";
 
 class AddArticleRouter extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class AddArticleRouter extends React.Component {
               <Route path="/" exact component={AddArticleHome} />
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
+              <Route path="/dashboard" exact component={Dashboard} />
             </Switch>
           </HashRouter>
         </AppProvider>
