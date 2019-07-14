@@ -19,8 +19,10 @@ class AppProvider extends React.Component {
             token
           }
         });
-        console.log(this.state);
-      }
+        // console.log(this.state);
+      },
+      article: "",
+      updateArticle: article => this.setState({ article })
     };
   }
 

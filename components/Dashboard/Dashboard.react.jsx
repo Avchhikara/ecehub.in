@@ -1,8 +1,12 @@
 import React from "react";
 
-import { Row, Col } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
+
 import AppContext from "./../AppProvider/AppContext";
 import { connect } from "./../../utils/renderWithContext";
+import DEditor from "./../Editor";
+import ArticlePreview from "./../ArticlePreview";
+// import { Editor } from "@tinymce/tinymce-react";
 
 import "./Dashboard.style.scss";
 
@@ -25,13 +29,21 @@ class Dashboard extends React.Component {
       //   window.location.href = "/add#/login";
     }
   }
+  //   handleEditorChange = e => {
+  //     console.log("Content was updated:", e.target.getContent());
+  //   };
 
   render() {
     return (
-      <div className="dashboard-wrapper container">
+      <div className="dashboard-wrapper container-fluid">
         <Row>
-          <Col sm={4}>Here will be the options</Col>
-          <Col sm={8}>Here will be the content</Col>
+          <Col sm={6}>
+            <DEditor updateArticle={this.props.updateArticle} />
+            <Button color="success">Publish</Button>
+          </Col>
+          <Col sm={6}>
+            <ArticlePreview article={this.props.article} />
+          </Col>
         </Row>
       </div>
     );
