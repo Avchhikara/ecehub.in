@@ -19,6 +19,11 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     console.log(this.props);
+    // Now, checking whether the credentials are  present or not
+    if (!this.props.user.token) {
+      this.props.history.push("/login?m=Please login first!");
+      //   window.location.href = "/add#/login";
+    }
   }
 
   render() {

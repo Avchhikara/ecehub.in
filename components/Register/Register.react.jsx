@@ -40,14 +40,15 @@ class Register extends React.Component {
     // This function will show the messages in the url that has been passed for the user
     // Implement same function for the login page
 
-    const message = decodeURI(window.location.hash.split("=")[1]);
-    // console.log(message);
+    const hash = decodeURI(window.location.hash).split("=");
     // console.log(window.location);
-    if (message) {
+    // console.log(typeof message);
+
+    if (hash[1]) {
       this.setState({
         response: {
           status: true,
-          message
+          message: hash[1]
         }
       });
     }

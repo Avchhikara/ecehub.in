@@ -43,7 +43,14 @@ class AddArticleHome extends React.Component {
             >
               Login
             </Button>
-            <Button color="success">Register</Button>
+            <Button
+              color="success"
+              onClick={() => {
+                this.props.history.push("/register");
+              }}
+            >
+              Register
+            </Button>
           </Jumbotron>
         </div>
       );

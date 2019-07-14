@@ -35,6 +35,21 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const hash = decodeURI(window.location.hash).split("=");
+    // console.log(window.location);
+    // console.log(typeof message);
+
+    if (hash[1]) {
+      this.setState({
+        response: {
+          status: true,
+          message: hash[1]
+        }
+      });
+    }
+  }
+
   onLoggingIn(values, loginUser, setSubmitting, resetForm) {
     axios
       .post(`${api}/register`, {
@@ -56,7 +71,7 @@ class Login extends React.Component {
         // Also, update the context API state
         loginUser({ ...data });
         this.props.history.push("/dashboard");
-        console.log(this.props);
+        // console.log(this.props);
       })
       .catch(err => {
         // first, setting the state to the error

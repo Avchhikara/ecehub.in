@@ -2,10 +2,10 @@ import React from "react";
 
 export const connect = Component => {
   return AppContext => {
-    return () => {
+    return props => {
       return (
         <AppContext.Consumer>
-          {context => <Component {...context} />}
+          {context => <Component {...context} {...props} />}
         </AppContext.Consumer>
       );
     };

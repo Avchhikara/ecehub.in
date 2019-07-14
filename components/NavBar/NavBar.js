@@ -15,17 +15,25 @@ import {
   Button
 } from "reactstrap";
 
+import AppContext from "./../AppProvider/AppContext";
+import { connect } from "./../../utils/renderWithContext";
+
 import "./NavBar.css";
 
 class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      isLoggedIn: false
     };
     this.navbar = React.createRef();
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(props);
   }
 
   toggleNavbar() {
@@ -51,32 +59,7 @@ class NavBar extends React.Component {
 
   render() {
     return (
-      <div
-      // onClick={() => {
-      //   let height = "76px";
-      //   let Img1Height = "40px";
-      //   let Img2Height = "50px";
-      //   let navBtnHeight = "40px";
-      //   let navInpHeight = "36px";
-      //   let navTogglerHeight = "36px";
-      //   let navTogglerIconHeight = "30px";
-
-      //   const headImg1 = document.querySelector("#head-img-1");
-      //   const headImg2 = document.querySelector("#head-img-2");
-      //   const navToggler = document.querySelector("#nav-toggler");
-      //   const navInp = document.querySelector("#nav-input");
-      //   const navBtn = document.querySelector("#nav-btn");
-      //   const navTogglerIcon = navToggler.children[0];
-
-      //   document.querySelector("#header").style.height = height;
-      //   headImg1.style.height = Img1Height;
-      //   headImg2.style.height = Img2Height;
-      //   navToggler.style.height = navTogglerHeight;
-      //   navInp.style.height = navInpHeight;
-      //   navBtn.style.height = navBtnHeight;
-      //   navTogglerIcon.style.height = navTogglerIconHeight;
-      // }}
-      >
+      <div>
         <Navbar color="light" light expand="md" fixed={"top"} id="header">
           <NavbarBrand href="/" className="nav-brand">
             <img
@@ -142,4 +125,4 @@ class NavBar extends React.Component {
   }
 }
 
-export default NavBar;
+export default connect(NavBar)(AppContext);
